@@ -4,8 +4,8 @@ import hmac
 
 app = Flask(__name__)
 
-# Chave secreta (substitua pela sua real da Hotmart)
-HOTMART_SECRET = 'sua_chave_secreta_aqui'
+# Chave secreta da Hotmart (verificação de HMAC)
+HOTMART_SECRET = 'RrtVUbyEcjLKJTvYsipYgSxr0jeLUF8d7be1a9-d7ab-4664-9e58-52914270895d'
 
 # Simulação de banco de dados
 usuarios = {}
@@ -21,6 +21,7 @@ def webhook():
     payload = request.data
     signature = request.headers.get('X-Hotmart-Hmac-SHA256', '')
 
+    # Geração da assinatura com a chave fornecida
     hash_hmac = hmac.new(HOTMART_SECRET.encode(), payload, hashlib.sha256).hexdigest()
     if hash_hmac != signature:
         return jsonify({'status': 'assinatura inválida'}), 403
