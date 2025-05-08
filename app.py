@@ -1,4 +1,3 @@
-
 from flask import Flask, request, jsonify
 import hashlib
 import hmac
@@ -11,8 +10,10 @@ HOTMART_SECRET = 'sua_chave_secreta_aqui'
 # Simulação de banco de dados
 usuarios = {}
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        return webhook()  # Redireciona para a lógica do webhook
     return 'API de Webhook Hotmart rodando!'
 
 @app.route('/webhook', methods=['POST'])
